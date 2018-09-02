@@ -1,33 +1,34 @@
 package game.server;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import game.client.Connection;
+import game.game.Player;
+import game.game.Room;
+
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConnectionHandler implements Runnable {
     private Socket clientSocket;
+    public static Room room = new Room();
+    private static List<Connection> connections = new ArrayList<>();
 
     public ConnectionHandler(Socket client) {
         this.clientSocket = client;
+        this.connections.add(new Connection(clientSocket));
+    }
+
+    public static void broadcast(String message) {
+        for(Connection c : connections)
+            c.sendMessage("BROADCAST: " + message);
     }
 
     @Override
     public void run() {
-        try {
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-            while (true) {
-                String command = in.readLine();
-                if (command != null) {
-                    System.out.println(command);
-                    out.write("Eae men vc falou em " + command + "\n");
-                    out.flush();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        for(Connection c : connections) {
+            String name = c.readMessage();
+            MainGame.room.addPlayer(new Player(name));
+            System.out.println("Player "+ name + " added.");
         }
     }
 }

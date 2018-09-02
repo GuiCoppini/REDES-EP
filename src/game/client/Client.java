@@ -1,35 +1,38 @@
 package game.client;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import game.game.Player;
+
 import java.net.Socket;
 import java.util.Scanner;
 
 import static java.lang.System.in;
 
 public class Client {
+    static Player player;
     static Scanner scanner = new Scanner(in);
+    static Connection connection;
+
+    public static void connect(String ip, int port) {
+        try {
+            connection = new Connection(new Socket(ip, port));
+        } catch (Exception e) {
+
+        }
+    }
 
     public static void main(String[] args) {
-        try {
-            Socket serverSocket = new Socket("localhost", 5555);
-            System.out.println("Connected to server");
-            PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+        System.out.println("Insira seu nick");
+        String name = scanner.nextLine();
+        player = new Player(name);
+        connect("localhost", 5555);
+        System.out.println("Connected to server");
 
-            while (true) {
-                String input = scanner.nextLine();
-                out.write(input + "\n");
-                out.flush();
+        System.out.println("Insira um x");
+        int x = scanner.nextInt();
+        System.out.println("Insira um y");
+        int y = scanner.nextInt();
 
-                String serverInput;
-                if ((serverInput = in.readLine()) != null)
-                    System.out.println(serverInput);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //mandou uma string "nickname,x,y"
+        connection.sendMessage(player.getName() + "," + x + "," + y);
     }
 }
