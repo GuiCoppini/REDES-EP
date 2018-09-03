@@ -3,23 +3,24 @@ package game.server;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
-    public static void main(String[] args) {
-        try {
-            ServerSocket serverSocket = new ServerSocket(5555);
+public class Server implements Runnable {
 
-            for (int i = 0; i<2; i++) {
+    private static ServerSocket serverSocket;
+
+    @Override
+    public void run() {
+        try {
+            serverSocket = new ServerSocket(5555);
+
+            while(true) {
                 System.out.println("Waiting connection");
                 Socket clientSocket = serverSocket.accept();
 
                 System.out.println("Client connected");
-                Thread thread = new Thread(new ConnectionHandler(clientSocket));
+                Thread thread = new Thread(new ClientConnection(clientSocket));
                 thread.start();
             }
-
-            ConnectionHandler.broadcast("EAE BOYS");
-
-        } catch (Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();
         }
     }

@@ -27,12 +27,16 @@ public class Client {
         connect("localhost", 5555);
         System.out.println("Connected to server");
 
-        System.out.println("Insira um x");
-        int x = scanner.nextInt();
-        System.out.println("Insira um y");
-        int y = scanner.nextInt();
+//        System.out.println("Insira um x");
+//        int x = scanner.nextInt();
+//        System.out.println("Insira um y");
+//        int y = scanner.nextInt();
 
         //mandou uma string "nickname,x,y"
-        connection.sendMessage(player.getName() + "," + x + "," + y);
+//        connection.sendMessage(player.getName() + "," + x + "," + y);
+
+        System.out.println("Press A to read message");
+        scanner.nextLine();
+        System.out.println(connection.readMessage());
     }
 }
