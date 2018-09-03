@@ -26,7 +26,7 @@ public class ClientConnection implements Runnable {
             MainThread.connections.add(this);
             System.out.println("Added a player");
 
-            MainThread.broadcastToClients("AAAAAAAAAAAA");
+//            MainThread.broadcastToClients("AAAAAAAAAAAA");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -35,6 +35,7 @@ public class ClientConnection implements Runnable {
     @Override
     public void run() {
         for(ClientConnection c : connections) {
+            c.sendMessage("Eae men");
 //            String name = c.readMessage();
 //            System.out.println("Player "+ name + " added.");
         }
