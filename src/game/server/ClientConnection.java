@@ -35,6 +35,7 @@ public class ClientConnection implements Runnable {
     @Override
     public void run() {
         for(ClientConnection c : connections) {
+            System.out.println("Gonna send welcome");
             c.sendMessage("Eae men");
 //            String name = c.readMessage();
 //            System.out.println("Player "+ name + " added.");
@@ -56,7 +57,7 @@ public class ClientConnection implements Runnable {
     }
 
     protected void sendMessage(String message) {
-        out.write(message);
+        out.write(message + "\n");
         out.flush();
     }
 
