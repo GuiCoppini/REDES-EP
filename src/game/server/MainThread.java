@@ -14,7 +14,6 @@ public class MainThread {
 
     public static void main(String[] args) {
         runServerSocket();
-
     }
 
     private static void runServerSocket() {
@@ -24,7 +23,7 @@ public class MainThread {
         thread.start();
     }
 
-    public static void broadcastToClients(String message) {
+    public static void broadcastToClients(Object message) {
         for(Integer id : players.keySet()) {
             System.out.println("Sending message to player of ID="+id);
             players.get(id).getConnection().sendMessage("broadcast,"+message);

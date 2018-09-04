@@ -1,6 +1,7 @@
 package game.game;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Table implements Serializable {
 
@@ -16,5 +17,10 @@ public class Table implements Serializable {
     public int[][] increment(int x, int y) {
         table[x][y]++;
         return table;
+    }
+
+    @Override
+    public String toString() {
+        for();
     }
 }

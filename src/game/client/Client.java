@@ -30,14 +30,6 @@ public class Client {
 
         connection.sendMessage("login,"+name);
 
-//        System.out.println("Insira um x");
-//        int x = scanner.nextInt();
-//        System.out.println("Insira um y");
-//        int y = scanner.nextInt();
-
-        //mandou uma string "nickname,x,y"
-//        connection.sendMessage(player.getName() + "," + x + "," + y);
-
         while(true) {
             ClientMessageHandler.handleMessage(connection.readMessage());
         }

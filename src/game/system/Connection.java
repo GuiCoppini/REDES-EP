@@ -1,30 +1,33 @@
 package game.system;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Connection {
-    PrintWriter out;
-    BufferedReader in;
+    ObjectOutputStream out;
+    ObjectInputStream in;
     Socket socket;
 
     public Connection(Socket socket) {
         this.socket = socket;
         try {
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public String readMessage() {
-        String input;
+    public Object readMessage() {
+        Object input;
         try {
             while (true)
-                if ((input = in.readLine()) != null) {
+                if ((input = in.readObject()) != null) {
                     return input;
                 }
         } catch (Exception e) {
@@ -33,8 +36,13 @@ public class Connection {
         }
     }
 
-    public void sendMessage(String message) {
-        out.write(message + "\n");
-        out.flush();
+    public void sendMessage(Object message) {
+        try {
+//            if(message instanceof String) message += "\n";
+            out.writeObject(message);
+            out.flush();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 }
