@@ -1,65 +1,31 @@
 package game.server;
 
-import game.client.Connection;
+import game.game.Player;
+import game.system.Connection;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.List;
 
 public class ClientConnection implements Runnable {
-    // TODO tirar o connection daqui e fazer o server conhecer so esse aqui
 
-//    private Socket clientSocket;
-    private static List<ClientConnection> connections = MainThread.connections;
-
-    PrintWriter out;
-    BufferedReader in;
+    private Connection connection;
 
     protected ClientConnection(Socket client) {
-//        this.clientSocket = client;
-        try {
-            out = new PrintWriter(client.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-
-            MainThread.connections.add(this);
-            System.out.println("Added a player");
-
-//            MainThread.broadcastToClients("AAAAAAAAAAAA");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.connection = new Connection(client);
     }
 
     @Override
     public void run() {
-        for(ClientConnection c : connections) {
-            System.out.println("Gonna send welcome");
-            c.sendMessage("Eae men");
-//            String name = c.readMessage();
-//            System.out.println("Player "+ name + " added.");
-        }
+        String[] firstTimeMessage = connection.readMessage().split(",");
+
+        System.out.println("Rodando o run");
+        // adiciona player ao pool principal
+        Player joined = new Player(firstTimeMessage[1]);
+
+        MainThread.players.put(joined.getId(), this);
+        MainThread.broadcastToClients("Player: "+joined.getName()+ " joined.");
     }
 
-    protected String readMessage() {
-        String input;
-        try {
-            while (true)
-                if ((input = in.readLine()) != null) {
-                    System.out.println("Received message: " + input);
-                    return readMessage();
-                }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Deu pau");
-        }
+    public Connection getConnection() {
+        return connection;
     }
-
-    protected void sendMessage(String message) {
-        out.write(message + "\n");
-        out.flush();
-    }
-
-
 }

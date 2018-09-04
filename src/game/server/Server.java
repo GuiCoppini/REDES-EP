@@ -15,8 +15,8 @@ public class Server implements Runnable {
             while(true) {
                 System.out.println("Waiting connection");
                 Socket clientSocket = serverSocket.accept();
-
                 System.out.println("Client connected");
+
                 Thread thread = new Thread(new ClientConnection(clientSocket));
                 thread.start();
             }

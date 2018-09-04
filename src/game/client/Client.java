@@ -1,6 +1,7 @@
 package game.client;
 
 import game.game.Player;
+import game.system.Connection;
 
 import java.net.Socket;
 import java.util.Scanner;
@@ -12,7 +13,7 @@ public class Client {
     static Scanner scanner = new Scanner(in);
     static Connection connection;
 
-    public static void connect(String ip, int port) {
+    private static void connect(String ip, int port) {
         try {
             connection = new Connection(new Socket(ip, port));
         } catch (Exception e) {
@@ -23,9 +24,11 @@ public class Client {
     public static void main(String[] args) {
         System.out.println("Insira seu nick");
         String name = scanner.nextLine();
-        player = new Player(name);
+
         connect("localhost", 5555);
         System.out.println("Connected to server");
+
+        connection.sendMessage("login,"+name);
 
 //        System.out.println("Insira um x");
 //        int x = scanner.nextInt();
@@ -35,8 +38,8 @@ public class Client {
         //mandou uma string "nickname,x,y"
 //        connection.sendMessage(player.getName() + "," + x + "," + y);
 
-        System.out.println("Press A to read message");
-        scanner.nextLine();
-        System.out.println(connection.readMessage());
+        while(true) {
+            ClientMessageHandler.handleMessage(connection.readMessage());
+        }
     }
 }

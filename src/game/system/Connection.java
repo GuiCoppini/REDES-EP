@@ -1,4 +1,4 @@
-package game.client;
+package game.system;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -8,8 +8,10 @@ import java.net.Socket;
 public class Connection {
     PrintWriter out;
     BufferedReader in;
+    Socket socket;
 
     public Connection(Socket socket) {
+        this.socket = socket;
         try {
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -24,7 +26,7 @@ public class Connection {
             while (true)
                 if ((input = in.readLine()) != null) {
                     System.out.println("Received message: " + input);
-                    return readMessage();
+                    return input;
                 }
         } catch (Exception e) {
             e.printStackTrace();
@@ -33,6 +35,7 @@ public class Connection {
     }
 
     public void sendMessage(String message) {
-        out.write(message);
+        out.write(message + "\n");
+        out.flush();
     }
 }

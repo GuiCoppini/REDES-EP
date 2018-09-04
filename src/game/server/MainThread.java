@@ -1,19 +1,19 @@
 package game.server;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import game.client.Connection;
 import game.game.Room;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainThread {
     private static Server server;
     protected static Room room = new Room();
-    protected static List<ClientConnection> connections = new ArrayList<>();
+
+    // map de players por ID
+    protected static Map<Integer, ClientConnection> players = new HashMap<>();
 
     public static void main(String[] args) {
         runServerSocket();
-
 
     }
 
@@ -25,7 +25,9 @@ public class MainThread {
     }
 
     public static void broadcastToClients(String message) {
-        for(ClientConnection c : connections)
-            c.sendMessage("BROADCAST: " + message);
+        for(Integer id : players.keySet()) {
+            System.out.println("Sending message to player of ID="+id);
+            players.get(id).getConnection().sendMessage("broadcast,"+message);
+        }
     }
 }
