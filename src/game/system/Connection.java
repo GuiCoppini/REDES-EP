@@ -25,7 +25,6 @@ public class Connection {
         try {
             while (true)
                 if ((input = in.readLine()) != null) {
-                    System.out.println("Received message: " + input);
                     return input;
                 }
         } catch (Exception e) {

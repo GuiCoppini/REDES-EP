@@ -15,14 +15,13 @@ public class ClientConnection implements Runnable {
 
     @Override
     public void run() {
-        String[] firstTimeMessage = connection.readMessage().split(",");
 
         System.out.println("Rodando o run");
         // adiciona player ao pool principal
-        Player joined = new Player(firstTimeMessage[1]);
 
-        MainThread.players.put(joined.getId(), this);
-        MainThread.broadcastToClients("Player: "+joined.getName()+ " joined.");
+        while(true)
+            ServerMessageHandler
+                    .handleIncomingMessage(connection.readMessage(), this);
     }
 
     public Connection getConnection() {

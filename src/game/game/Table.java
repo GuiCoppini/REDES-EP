@@ -1,6 +1,9 @@
 package game.game;
 
-public class Table {
+import java.io.Serializable;
+
+public class Table implements Serializable {
+
     private int[][] table = new int[5][5];
 
     public Table() {
