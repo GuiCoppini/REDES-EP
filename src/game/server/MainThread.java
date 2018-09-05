@@ -1,9 +1,10 @@
 package game.server;
 
-import game.game.Room;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import game.game.Room;
+import game.system.Message;
 
 public class MainThread {
     private static Server server;
@@ -23,10 +24,12 @@ public class MainThread {
         thread.start();
     }
 
-    public static void broadcastToClients(Object message) {
+    public static void broadcastToClients(Message message) {
+
         for(Integer id : players.keySet()) {
             System.out.println("Sending message to player of ID="+id);
-            players.get(id).getConnection().sendMessage("broadcast,"+message);
+
+            players.get(id).getConnection().sendMessage(message);
         }
     }
 }

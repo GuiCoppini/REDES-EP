@@ -1,7 +1,6 @@
 package game.game;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 public class Table implements Serializable {
 
@@ -19,8 +18,4 @@ public class Table implements Serializable {
         return table;
     }
 
-    @Override
-    public String toString() {
-        for();
-    }
 }

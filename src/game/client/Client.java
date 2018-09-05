@@ -1,11 +1,11 @@
 package game.client;
 
-import game.game.Player;
-import game.system.Connection;
-
 import java.net.Socket;
 import java.util.Scanner;
 
+import game.game.Player;
+import game.system.Connection;
+import game.system.Message;
 import static java.lang.System.in;
 
 public class Client {
@@ -28,7 +28,7 @@ public class Client {
         connect("localhost", 5555);
         System.out.println("Connected to server");
 
-        connection.sendMessage("login,"+name);
+        connection.sendMessage(new Message("login", name));
 
         while(true) {
             ClientMessageHandler.handleMessage(connection.readMessage());

@@ -1,27 +1,28 @@
 package game.server;
 
 import game.game.Player;
+import game.system.Message;
 
 public class ServerMessageHandler {
-    static void handleIncomingMessage(Object message, ClientConnection c) {
-        if(message instanceof String) {
-            String[] messageParts = ((String) message).split(",");
-            switch(messageParts[0]) {
-                case ("coord"):
-                    System.out.println("X = "+messageParts[1] + " | Y = " + messageParts[2]);
-                    MainThread.room.getTable().increment(Integer.valueOf(messageParts[1]), Integer.valueOf(messageParts[2]));
 
-                    MainThread.broadcastToClients(MainThread.room.getTable());
-                    break;
-                case ("login"):
-                    String nickname = messageParts[1];
-                    Player joined = new Player(nickname);
-                    MainThread.players.put(joined.getId(), c);
+    static void handleIncomingMessage(Message message, ClientConnection c) {
+        switch(message.getCommand()) {
+            case ("coord"):
+                int x = (int) message.getArguments().get(0);
+                int y = (int) message.getArguments().get(1);
+                System.out.println("X = " + x + " | Y = " + y);
+                MainThread.room.getTable().increment(x, y);
 
-                    c.getConnection().sendMessage("play");
+//                MainThread.broadcastToClients(MainThread.room.getTable());
+                break;
+            case ("login"):
+                String nickname = (String) message.getArguments().get(0);
+                Player joined = new Player(nickname);
+                MainThread.players.put(joined.getId(), c);
 
-                    MainThread.broadcastToClients("Player " + nickname + " joined.");
-            }
+//                c.getConnection().sendMessage(new Message("play"));
+
+                MainThread.broadcastToClients(new Message("print","Player " + nickname + " joined."));
         }
     }
 }

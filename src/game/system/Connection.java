@@ -1,11 +1,8 @@
 package game.system;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Connection {
@@ -23,11 +20,11 @@ public class Connection {
         }
     }
 
-    public Object readMessage() {
-        Object input;
+    public Message readMessage() {
+        Message input;
         try {
             while (true)
-                if ((input = in.readObject()) != null) {
+                if ((input = (Message) in.readObject()) != null) {
                     return input;
                 }
         } catch (Exception e) {
@@ -36,9 +33,8 @@ public class Connection {
         }
     }
 
-    public void sendMessage(Object message) {
+    public void sendMessage(Message message) {
         try {
-//            if(message instanceof String) message += "\n";
             out.writeObject(message);
             out.flush();
         } catch(IOException e) {
