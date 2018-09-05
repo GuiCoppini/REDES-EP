@@ -7,13 +7,13 @@ public class ServerMessageHandler {
 
     static void handleIncomingMessage(Message message, ClientConnection c) {
         switch(message.getCommand()) {
-            case ("coord"):
+            case ("coordinates"):
                 int x = (int) message.getArguments().get(0);
                 int y = (int) message.getArguments().get(1);
                 System.out.println("X = " + x + " | Y = " + y);
                 MainThread.room.getTable().increment(x, y);
 
-//                MainThread.broadcastToClients(MainThread.room.getTable());
+                MainThread.broadcastToClients(new Message("inc", x,y));
                 break;
             case ("login"):
                 String nickname = (String) message.getArguments().get(0);
@@ -23,6 +23,7 @@ public class ServerMessageHandler {
 //                c.getConnection().sendMessage(new Message("play"));
 
                 MainThread.broadcastToClients(new Message("print","Player " + nickname + " joined."));
+                MainThread.broadcastToClients(new Message("table",MainThread.room.getTable()));
         }
     }
 }

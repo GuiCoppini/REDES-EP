@@ -22,12 +22,14 @@ public class MainThread {
 
         Thread thread = new Thread(server);
         thread.start();
+
+        Message playMessage = new Message("play");
     }
 
     public static void broadcastToClients(Message message) {
 
         for(Integer id : players.keySet()) {
-            System.out.println("Sending message to player of ID="+id);
+            System.out.println("Sending message to player of ID=" + id);
 
             players.get(id).getConnection().sendMessage(message);
         }

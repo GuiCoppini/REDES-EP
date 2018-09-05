@@ -4,6 +4,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import game.game.Player;
+import game.game.Table;
 import game.system.Connection;
 import game.system.Message;
 import static java.lang.System.in;
@@ -12,6 +13,7 @@ public class Client {
     static Player player;
     static Scanner scanner = new Scanner(in);
     static Connection connection;
+    static Table localTable = new Table();
 
     private static void connect(String ip, int port) {
         try {
@@ -32,6 +34,12 @@ public class Client {
 
         while(true) {
             ClientMessageHandler.handleMessage(connection.readMessage());
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Insira um x e um y:");
+            int x = sc.nextInt();
+            int y = sc.nextInt();
+
+            Client.connection.sendMessage(new Message("coordinates", x, y));
         }
     }
 }
