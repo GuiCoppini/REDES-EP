@@ -1,12 +1,13 @@
 package game.client;
 
 import java.io.Serializable;
-import java.util.Scanner;
 
 import game.game.Table;
 import game.system.Message;
 
 public class ClientMessageHandler {
+
+
     static void handleMessage(Message message) {
 
         switch(message.getCommand()) {
@@ -18,12 +19,7 @@ public class ClientMessageHandler {
                 break;
 
             case ("play"):
-                Scanner sc = new Scanner(System.in);
-                System.out.println("Insira um x e um y:");
-                int x = sc.nextInt();
-                int y = sc.nextInt();
-
-                Client.connection.sendMessage(new Message("coordinates", x, y));
+                Client.play();
                 break;
 
             case ("table"):

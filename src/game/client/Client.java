@@ -32,14 +32,23 @@ public class Client {
 
         connection.sendMessage(new Message("login", name));
 
-        while(true) {
-            ClientMessageHandler.handleMessage(connection.readMessage());
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Insira um x e um y:");
-            int x = sc.nextInt();
-            int y = sc.nextInt();
+        new Thread(() -> {
+            while(true)
+                ClientMessageHandler.handleMessage(connection.readMessage());
+        }).start();
 
-            Client.connection.sendMessage(new Message("coordinates", x, y));
-        }
+        play();
+        play();
+        play();
+        play();
+    }
+
+    public static void play() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Insira um x e um y:");
+        int x = sc.nextInt();
+        int y = sc.nextInt();
+
+        Client.connection.sendMessage(new Message("coordinates", x, y));
     }
 }
