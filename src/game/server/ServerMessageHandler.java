@@ -23,7 +23,7 @@ public class ServerMessageHandler {
 //                c.getConnection().sendMessage(new Message("play"));
 
                 MainThread.broadcastToClients(new Message("print","Player " + nickname + " joined."));
-                MainThread.broadcastToClients(new Message("table",MainThread.room.getTable()));
+                c.getConnection().sendMessage(new Message("table",MainThread.room.getTable()));
         }
     }
 }
